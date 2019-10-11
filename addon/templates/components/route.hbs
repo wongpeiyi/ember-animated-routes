@@ -1,0 +1,20 @@
+{{#let
+  (component this.componentName
+    model=this.renderTask.attributes
+    __renderTask__=this.renderTask
+  )
+  as |routeComponent|
+}}
+  {{#if hasBlock}}
+
+    {{yield (hash
+      isActive=this.isActive
+      component=routeComponent
+    )}}
+
+  {{else if this.renderTask.inDOM}}
+
+    {{routeComponent}}
+
+  {{/if}}
+{{/let}}
