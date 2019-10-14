@@ -1,0 +1,31 @@
+.index,
+.other {
+  position: absolute;
+  height: 200px;
+}
+
+.index {
+  background: #fcc;
+}
+.other {
+  background: #ccf;
+}
+
+.concurrent.index,
+.concurrent.other,
+.shared.index,
+.shared.other {
+  width: 100%;
+}
+.concurrent.other,
+.shared.other {
+  top: 200px;
+}
+
+.non-blocking.index,
+.non-blocking.other {
+  width: 50%;
+}
+.non-blocking.other {
+  left: 50%;
+}
