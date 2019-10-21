@@ -8,7 +8,11 @@ const AnimateInManager = {
   installModifier(state, element, { positional }) {
     const [component, fn] = positional;
 
-    component.args.__renderTask__.performInAnimation((opts) => fn(element, opts));
+    const renderTask = component.args.__renderTask__;
+
+    if (renderTask) {
+      renderTask.performInAnimation((opts) => fn(element, opts));
+    }
   },
 
   updateModifier() {},
