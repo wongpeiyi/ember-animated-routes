@@ -1,4 +1,5 @@
 import { setModifierManager, capabilities } from '@ember/modifier';
+import { isArray } from '@ember/array';
 
 const AnimateOutManager = {
   capabilities: capabilities('3.13'),
@@ -6,7 +7,7 @@ const AnimateOutManager = {
   createModifier() {},
 
   installModifier(state, element, { positional }) {
-    const [component, fn] = positional;
+    const [component, fn] = isArray(positional[0]) ? positional[0] : positional;
 
     const renderTask = component.args.__renderTask__;
 
