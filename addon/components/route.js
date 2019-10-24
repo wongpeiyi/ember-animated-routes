@@ -19,9 +19,7 @@ class RouteComponent extends Component {
 
     this.queue = this.args.queue || new AnimationQueue();
 
-    if (typeof this.isActive === 'undefined') {
-      this.computeIsActive();
-    }
+    this.computeIsActive();
   }
 
   get componentName() {

@@ -24,21 +24,25 @@ export default class RenderTask {
   }
 
   reset() {
+    this.inDOMPromise = new Promise((res) => (this.didInsertIntoDOM = res));
+
     this.tearingdown = false;
     this.teardownPromise = new Promise((res) => (this.resolveTeardown = res));
 
     this.inPromises = [];
-    this.inAnimations.forEach((fn) => this.performInAnimation(fn));
+    this.inAnimations.forEach(([fn, element]) => this.performInAnimation(fn, element));
   }
 
   async perform() {
     this.inDOM = true;
 
+    this.didInsertIntoDOM();
+
     await Promise.all(this.inPromises);
 
     await this.teardownPromise;
 
-    await this.transitionOut();
+    await this.animateOut();
 
     this.reusable = true;
   }
@@ -50,13 +54,15 @@ export default class RenderTask {
     this.resolveTeardown();
   }
 
-  performInAnimation(fn) {
-    if (!this.inAnimations.includes(fn)) {
-      this.inAnimations.push(fn);
+  async performInAnimation(fn, element) {
+    if (!this.inAnimations.find(([existing]) => existing === fn)) {
+      this.inAnimations.push([fn, element]);
     }
 
+    await this.inDOMPromise;
+
     const promise = new Promise(async (next) => {
-      await fn({
+      await fn(element, {
         next,
         fromRoute: this.fromRoute
       });
@@ -67,17 +73,19 @@ export default class RenderTask {
     this.inPromises.push(promise);
   }
 
-  registerOutAnimation(fn) {
-    this.outAnimations.push(fn);
+  registerOutAnimation(fn, element) {
+    if (!this.outAnimations.find(([existing]) => existing === fn)) {
+      this.outAnimations.push([fn, element]);
+    }
   }
 
-  async transitionOut() {
+  async animateOut() {
     const nextPromises = [];
     const fnPromises = [];
 
-    for (let fn of this.outAnimations) {
+    for (let [fn, element] of this.outAnimations) {
       const nextPromise = new Promise(async (next) => {
-        const fnPromise = fn({
+        const fnPromise = fn(element, {
           next,
           toRoute: this.toRoute
         });
@@ -92,13 +100,15 @@ export default class RenderTask {
       nextPromises.push(nextPromise);
     }
 
-    Promise.all(fnPromises).then(() => {
-      if (this.tearingdown) {
-        this.inDOM = false;
-        this.queue.remove(this);
-      }
-    });
+    Promise.all(fnPromises).then(() => this.removeFromDOM());
 
     return Promise.all(nextPromises);
+  }
+
+  removeFromDOM() {
+    if (this.tearingdown && !this.component.args.alwaysRendered) {
+      this.inDOM = false;
+      this.queue.remove(this);
+    }
   }
 }

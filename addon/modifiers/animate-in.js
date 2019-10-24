@@ -4,21 +4,31 @@ import { isArray } from '@ember/array';
 const AnimateInManager = {
   capabilities: capabilities('3.13'),
 
-  createModifier() {},
+  createModifier() {
+    return { element: null };
+  },
 
   installModifier(state, element, { positional }) {
-    const [component, fn] = isArray(positional[0]) ? positional[0] : positional;
+    state.element = element;
+
+    this.animateIn(element, positional);
+  },
+
+  updateModifier(state, { positional }) {
+    this.animateIn(state.element, positional);
+  },
+
+  destroyModifier() {},
+
+  animateIn(element, args) {
+    const [component, fn] = isArray(args[0]) ? args[0] : args;
 
     const renderTask = component.args.__renderTask__;
 
     if (renderTask) {
-      renderTask.performInAnimation((opts) => fn(element, opts));
+      renderTask.performInAnimation(fn, element);
     }
-  },
-
-  updateModifier() {},
-
-  destroyModifier() {}
+  }
 };
 
 export default setModifierManager(() => AnimateInManager, class AnimateInModifier {});
