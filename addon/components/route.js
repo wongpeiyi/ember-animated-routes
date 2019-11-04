@@ -38,6 +38,14 @@ class RouteComponent extends Component {
     return this.queue.renderTaskFor(this);
   }
 
+  get shouldPreserve() {
+    if (!this.args.preserveOn) {
+      return;
+    }
+
+    return this.args.preserveOn.split(' ').some((route) => this.router.isActive(route));
+  }
+
   computeIsActive(transition) {
     const isActive = this.router.isActive(this.routeName);
 
@@ -45,13 +53,15 @@ class RouteComponent extends Component {
       const fromRoute = transition ? transition.from : null;
 
       this.queue.queueRender(this, fromRoute, this.routeHandler.attributes);
-    } else if (!isActive && this.isActive) {
+
+      this.isActive = true;
+    } else if (!isActive && this.isActive && !this.shouldPreserve) {
       const toRoute = transition.to;
 
       this.queue.queueTeardown(this, toRoute);
-    }
 
-    this.isActive = isActive;
+      this.isActive = false;
+    }
   }
 }
 
