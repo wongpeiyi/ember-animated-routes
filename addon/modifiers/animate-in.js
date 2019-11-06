@@ -5,28 +5,28 @@ const AnimateInManager = {
   capabilities: capabilities('3.13'),
 
   createModifier() {
-    return { element: null };
+    return { element: null, renderTask: null };
   },
 
   installModifier(state, element, { positional }) {
     state.element = element;
 
-    this.animateIn(element, positional);
+    this.animateIn(state, positional);
   },
 
   updateModifier(state, { positional }) {
-    this.animateIn(state.element, positional);
+    if (!state.renderTask) {
+      this.animateIn(state, positional);
+    }
   },
 
   destroyModifier() {},
 
-  animateIn(element, args) {
-    const [component, fn] = isArray(args[0]) ? args[0] : args;
+  animateIn(state, [component, fn]) {
+    state.renderTask = component.args ? component.args.__renderTask__ : component.__renderTask__;
 
-    const renderTask = component.args ? component.args.__renderTask__ : component.__renderTask__;
-
-    if (renderTask) {
-      renderTask.performInAnimation(fn, element);
+    if (state.renderTask) {
+      state.renderTask.performInAnimation(fn, state.element);
     }
   }
 };

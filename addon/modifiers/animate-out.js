@@ -5,28 +5,28 @@ const AnimateOutManager = {
   capabilities: capabilities('3.13'),
 
   createModifier() {
-    return { element: null };
+    return { element: null, renderTask: null };
   },
 
   installModifier(state, element, { positional }) {
     state.element = element;
-    state.position = positional;
-    this.registerOutAnimation(element, positional);
+
+    this.registerOutAnimation(state, positional);
   },
 
   updateModifier(state, { positional }) {
-    this.registerOutAnimation(state.element, positional);
+    if (!state.renderTask) {
+      this.registerOutAnimation(state, positional);
+    }
   },
 
   destroyModifier() {},
 
-  registerOutAnimation(element, args) {
-    const [component, fn] = isArray(args[0]) ? args[0] : args;
+  registerOutAnimation(state, [component, fn]) {
+    state.renderTask = component.args ? component.args.__renderTask__ : component.__renderTask__;
 
-    const renderTask = component.args ? component.args.__renderTask__ : component.__renderTask__;
-
-    if (renderTask) {
-      renderTask.registerOutAnimation(fn, element);
+    if (state.renderTask) {
+      state.renderTask.registerOutAnimation(fn, state.element);
     }
   }
 };
