@@ -3,18 +3,20 @@
     model=this.renderTask.attributes
     __renderTask__=this.renderTask
   )
-  as |routeComponent|
+  as |RouteComponent|
 }}
   {{#if hasBlock}}
 
     {{yield (hash
+      inDOM=this.renderTask.inDOM
       isActive=this.isActive
-      component=routeComponent
+      component=RouteComponent
+      __renderTask__=this.renderTask
     )}}
 
   {{else if this.renderTask.inDOM}}
 
-    {{routeComponent}}
+    <RouteComponent ...args />
 
   {{/if}}
 {{/let}}

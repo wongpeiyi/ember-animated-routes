@@ -23,7 +23,7 @@ const AnimateOutManager = {
   registerOutAnimation(element, args) {
     const [component, fn] = isArray(args[0]) ? args[0] : args;
 
-    const renderTask = component.args.__renderTask__;
+    const renderTask = component.args ? component.args.__renderTask__ : component.__renderTask__;
 
     if (renderTask) {
       renderTask.registerOutAnimation(fn, element);
