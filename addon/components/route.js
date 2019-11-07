@@ -46,6 +46,10 @@ class RouteComponent extends Component {
     return this.args.preserveOn.split(' ').some((route) => this.router.isActive(route));
   }
 
+  get inDOM() {
+    return (this.renderTask && this.renderTask.inDOM) || this.args.alwaysRendered;
+  }
+
   computeIsActive(transition) {
     const isActive = this.router.isActive(this.routeName);
 

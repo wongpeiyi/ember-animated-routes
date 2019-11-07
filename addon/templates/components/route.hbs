@@ -8,13 +8,13 @@
   {{#if hasBlock}}
 
     {{yield (hash
-      inDOM=this.renderTask.inDOM
+      inDOM=this.inDOM
       isActive=this.isActive
       component=RouteComponent
       __renderTask__=this.renderTask
     )}}
 
-  {{else if this.renderTask.inDOM}}
+  {{else if this.inDOM}}
 
     <RouteComponent />
 
