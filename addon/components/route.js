@@ -40,7 +40,7 @@ class RouteComponent extends Component {
 
   get shouldPreserve() {
     if (!this.args.preserveOn) {
-      return;
+      return false;
     }
 
     return this.args.preserveOn.split(' ').some((route) => this.router.isActive(route));

@@ -1,5 +1,4 @@
 import { setModifierManager, capabilities } from '@ember/modifier';
-import { isArray } from '@ember/array';
 
 const AnimateInManager = {
   capabilities: capabilities('3.13'),
