@@ -48,4 +48,8 @@ export default class AnimationQueue {
   remove(task) {
     this.tasks.removeObject(task);
   }
+
+  hasInDOM(routeName) {
+    return this.tasks.some((task) => task.inDOM && task.component.args.name === routeName);
+  }
 }
