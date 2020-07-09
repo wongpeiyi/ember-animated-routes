@@ -1,4 +1,4 @@
-<RouteContainer as |route|>
-  {{route name="shared/index"}}
-  {{route name="shared/other"}}
-</RouteContainer>
+{{#with (animation-queue) as |queue|}}
+  <Route @name="shared/index" @queue={{queue}} />
+  <Route @name="shared/other" @queue={{queue}} />
+{{/with}}
