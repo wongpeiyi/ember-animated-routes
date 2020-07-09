@@ -3,6 +3,7 @@ import AnimationQueue from 'ember-animated-routes/lib/animation-queue';
 import template from 'ember-animated-routes/templates/components/route';
 import { setComponentTemplate } from '@ember/component';
 import { inject as service } from '@ember/service';
+import { scheduleOnce } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 
 class RouteComponent extends Component {
@@ -19,7 +20,7 @@ class RouteComponent extends Component {
 
     this.queue = this.args.queue || new AnimationQueue();
 
-    this.computeIsActive();
+    scheduleOnce('afterRender', this, 'computeIsActive');
   }
 
   get componentName() {
