@@ -92,7 +92,14 @@ export default class RenderTask {
 
         fnPromises.push(fnPromise);
 
-        await fnPromise;
+        try {
+          await fnPromise;
+        } catch (e) {
+          // ember-concurrency
+          if (e.name !== 'TaskCancelation') {
+            throw e;
+          }
+        }
 
         next();
       });
@@ -100,7 +107,14 @@ export default class RenderTask {
       nextPromises.push(nextPromise);
     }
 
-    Promise.all(fnPromises).then(() => this.removeFromDOM());
+    Promise.all(fnPromises)
+      .then(() => this.removeFromDOM())
+      .catch((e) => {
+        // ember-concurrency
+        if (e.name !== 'TaskCancelation') {
+          throw e;
+        }
+      });
 
     return Promise.all(nextPromises);
   }
