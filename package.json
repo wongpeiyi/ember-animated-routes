@@ -1,6 +1,6 @@
 {
   "name": "ember-animated-routes",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Ember addon that replaces outlets for better animation control",
   "keywords": [
     "ember-addon"
