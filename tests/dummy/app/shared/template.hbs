@@ -1,4 +1,4 @@
-{{#with (animation-queue) as |queue|}}
+{{#let (animation-queue) as |queue|}}
   <Route @name="shared/index" @queue={{queue}} />
   <Route @name="shared/other" @queue={{queue}} />
-{{/with}}
+{{/let}}

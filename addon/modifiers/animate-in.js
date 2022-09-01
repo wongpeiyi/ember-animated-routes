@@ -1,7 +1,7 @@
 import { setModifierManager, capabilities } from '@ember/modifier';
 
 const AnimateInManager = {
-  capabilities: capabilities('3.13'),
+  capabilities: capabilities('3.22'),
 
   createModifier() {
     return { element: null, renderTask: null };

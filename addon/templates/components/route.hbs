@@ -1,18 +1,17 @@
 {{#let
-  (component this.componentName
-    model=this.renderTask.attributes
-    __renderTask__=this.renderTask
-  )
+  (component this.componentName model=this.renderTask.attributes __renderTask__=this.renderTask)
   as |RouteComponent|
 }}
   {{#if (has-block)}}
 
-    {{yield (hash
-      inDOM=this.inDOM
-      isActive=this.isActive
-      component=RouteComponent
-      __renderTask__=this.renderTask
-    )}}
+    {{yield
+      (hash
+        inDOM=this.inDOM
+        isActive=this.isActive
+        component=RouteComponent
+        __renderTask__=this.renderTask
+      )
+    }}
 
   {{else if this.inDOM}}
 

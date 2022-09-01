@@ -11,10 +11,10 @@ function translateY(selector) {
   return +document.querySelector(selector).style.transform.replace(/translateY\(|px\)/g, '');
 }
 
-module('Acceptance | animations', function(hooks) {
+module('Acceptance | animations', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('concurrent animations across different components', async function(assert) {
+  test('concurrent animations across different components', async function (assert) {
     await visit('/concurrent/index');
 
     // index starts fading in
@@ -47,7 +47,7 @@ module('Acceptance | animations', function(hooks) {
     assert.ok(opacity('.other') > 0.99);
   });
 
-  test('animations block their own queue', async function(assert) {
+  test('animations block their own queue', async function (assert) {
     await visit('/concurrent/index');
 
     // index starts fading in
@@ -81,7 +81,7 @@ module('Acceptance | animations', function(hooks) {
     assert.ok(opacity('.index') > 0.9);
   });
 
-  test('animations can be non-blocking', async function(assert) {
+  test('animations can be non-blocking', async function (assert) {
     await visit('/non-blocking/index');
 
     // index starts translating in
@@ -108,7 +108,7 @@ module('Acceptance | animations', function(hooks) {
     assert.ok(translateY('.index') > 195);
   });
 
-  test('animations can share the same queue', async function(assert) {
+  test('animations can share the same queue', async function (assert) {
     await visit('/shared/index');
 
     await new Promise((res) => later(res, 500));
@@ -136,7 +136,7 @@ module('Acceptance | animations', function(hooks) {
     assert.ok(opacity('.other') > 0.9, opacity('.other'));
   });
 
-  test('animations that share the same queue can be interrupted', async function(assert) {
+  test('animations that share the same queue can be interrupted', async function (assert) {
     await visit('/shared/index');
 
     await new Promise((res) => later(res, 500));

@@ -1,3 +1,5 @@
+/* eslint-disable no-async-promise-executor */
+
 import RenderTask from './render-task';
 import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
