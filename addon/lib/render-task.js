@@ -1,3 +1,5 @@
+/* eslint-disable no-async-promise-executor */
+
 import { tracked } from '@glimmer/tracking';
 
 export default class RenderTask {
